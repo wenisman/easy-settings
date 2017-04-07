@@ -1,0 +1,62 @@
+{
+    "version": "0.1.0",
+    "command": "cmd",
+    "isShellCommand": true,
+    "showOutput": "silent",
+    "args": [
+        "/c"
+    ],
+    "tasks": [
+        {
+            "taskName": "build",
+            "args": ["platform-easysettings"],
+            "isBuildCommand": true,
+            "showOutput": "always",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "taskName": "restore",
+            "suppressTaskName": true,
+            "args" : ["dotnet", "restore"],
+            "showOutput": "always",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "taskName": "publish debug 2012R2",
+            "suppressTaskName": true,
+            "args" : ["dotnet", "publish", "--configuration", "Debug", "--runtime", "win8-x64"],
+            "showOutput": "always",
+            "isBuildCommand": true,
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "taskName": "publish release 2012R2",
+            "suppressTaskName": true,
+            "args" : ["dotnet", "publish", "--configuration", "Release", "--runtime", "win8-x64"],
+            "showOutput": "always",
+            "isBuildCommand": true,
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "taskName": "publish release Nano",
+            "suppressTaskName": true,
+            "args" : ["dotnet", "publish", "--configuration", "Release", "--runtime", "win10-x64"],
+            "showOutput": "always",
+            "isBuildCommand": true,
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "taskName": "unittest",
+            "suppressTaskName": true,
+            "args" : ["dotnet", "test"],
+            "isTestCommand": true,
+            "showOutput": "always"
+        },
+        {
+            "taskName": "dotnet version",
+            "suppressTaskName": true,
+            "args" : ["dotnet", "--version"],
+            "showOutput": "always"
+        }
+    ]
+}
