@@ -5,16 +5,15 @@ using System.Threading.Tasks;
 
 using Consul;
 
-namespace Platform.EasySettings
+namespace EasySettings
 {
 
     class ConsulLoader  
     {
         private readonly string _consulUri;
-        public ConsulLoader(string environment){
-            _consulUri = $"http://service-discovery.{environment}.williamhill.internal:8500";
+        public ConsulLoader(string consulUri){
+            _consulUri = consulUri;
         }
-
 
         private async Task<IDictionary<string, string>> Load()
         {

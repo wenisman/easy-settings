@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "platform-easysettings", "src\platform-easysettings.csproj", "{288214AF-0840-4F3D-8BB0-AEE572DBE3DE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "easysettings", "src\easysettings.csproj", "{288214AF-0840-4F3D-8BB0-AEE572DBE3DE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test", "test\test.csproj", "{2E76FE14-49B5-458C-8953-83EF212D0E6E}"
 EndProject

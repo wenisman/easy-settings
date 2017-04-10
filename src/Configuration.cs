@@ -1,41 +1,43 @@
 ﻿using System;
+using System.IO;
+using Microsoft.Extensions.Configuration;
 
-namespace Platform.EasySettings
+namespace EasySettings
 {
     public class Configuration
     {
         private readonly string _environment;
-        private readonly ConsulLoader _consulLoader;
+        private readonly FileLoader _fileLoader;
 
-        public Configuration(string userEnv) 
+        public Configuration(string environmentVar = "Environment") 
         {
-            _environment = GetEnvironment(userEnv);
-            _consulLoader = new ConsulLoader(_environment);
+            _environment = GetEnvironment(environmentVar);
+            _fileLoader = new FileLoader(_environment);
         }
 
-        private string GetEnvironment(string userEnv) {
+        public Configuration(string configFilePath, string environmentVar = "Environment")
+        {
+            _environment = GetEnvironment(environmentVar);
+            _fileLoader = new FileLoader(environmentVar, configFilePath);
+        }
+
+        private string GetEnvironment(string environmentVar = "Environment") {
             var environment = Environment.GetEnvironmentVariable("Environment");
             if (string.IsNullOrEmpty(environment)) {
-                environment = Environment.GetEnvironmentVariable("WHA_ENV");
-            }
-
-            if (string.IsNullOrEmpty(environment)) {
-                environment = userEnv;
+                // TODO : log this error
+                environment = string.Empty;
             }
 
             return environment;
         }
 
 
-        public void Load() 
+        public IConfiguration Load() 
         {
-            
-        }
+            ConfigurationBuilder builder = new ConfigurationBuilder();
+            _fileLoader.AddJsonFiles(builder);
 
-
-        private string ReadConsul()
-        {
-            return string.Empty;
+            return builder.Build();
         }
     }
 }

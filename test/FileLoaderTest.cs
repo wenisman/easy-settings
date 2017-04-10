@@ -1,28 +1,34 @@
-using System;
+using System.Linq;
+using Microsoft.Extensions.Configuration;
 using Xunit;
 
-using Platform.EasySettings;
+using EasySettings;
 
 namespace test
 {
     public class FileLoaderTest
     {
-
-        private FileLoader _loader;
+        private readonly IConfiguration _configuration;
 
         public FileLoaderTest() {
-            _loader = new FileLoader("first");
+            var loader = new FileLoader("first");
+            var builder = new ConfigurationBuilder();
+            loader.AddJsonFiles(builder);
+
+            _configuration = builder.Build();
         }
 
+        [Fact]
+        public void should_load_settings_file()
+        {
+            Assert.Equal("valueOne", _configuration["keyOne"]);
+            Assert.Equal("nested value one", _configuration["keyTwo:nestOne"]);
+        }
 
         [Fact]
-        public void should_flatmap_json()
+        public void should_read_secets()
         {
-            var output = _loader.Load();
-            foreach(var item in output) {
-                Console.WriteLine($"{item.Key} : {item.Value}");
-            }
-            Assert.True(true);
+            Assert.Equal("unseen one", _configuration["secretOne"]);
         }
     }
 }

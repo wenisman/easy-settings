@@ -1,6 +1,6 @@
 {
     "keyOne": "valueOne",
     "keyTwo": {
-        "nestOne": "valueNestOne"
+        "nestOne": "nested value one"
     }
 }
