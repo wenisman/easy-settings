@@ -1,20 +1,20 @@
+using System;
 using System.IO;
 using Microsoft.Extensions.Configuration;
 
-namespace EasySettings
+namespace EasySettings.CustomConfiguration
 {
-    public class FileLoader {
+    public class Json {
 
         private readonly string _environment;
         private readonly string _path;
 
-        public FileLoader(string environment) {
+        public Json(string environment) {
             _environment = environment;
-            
             _path = Directory.GetCurrentDirectory();
         }
 
-        public FileLoader(string environment, string configPath) : this(environment)
+        public Json(string environment, string configPath) : this(environment)
         {
             _path = configPath;
         }
@@ -24,10 +24,11 @@ namespace EasySettings
         }
 
         private string GetSecretsFileName() {
+            Console.WriteLine($"{_path} {_environment}.secrets.json");
             return $"{_environment}.secrets.json";
         }
 
-        public ConfigurationBuilder AddJsonFiles(ConfigurationBuilder builder) 
+        public IConfigurationBuilder AddJsonFiles(IConfigurationBuilder builder) 
         {
             builder
                 .SetBasePath(_path)

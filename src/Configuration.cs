@@ -2,23 +2,22 @@
 using System.IO;
 using Microsoft.Extensions.Configuration;
 
+using EasySettings.CustomConfiguration;
+
 namespace EasySettings
 {
     public class Configuration
     {
         private readonly string _environment;
-        private readonly FileLoader _fileLoader;
 
         public Configuration(string environmentVar = "Environment") 
         {
             _environment = GetEnvironment(environmentVar);
-            _fileLoader = new FileLoader(_environment);
         }
 
         public Configuration(string configFilePath, string environmentVar = "Environment")
         {
             _environment = GetEnvironment(environmentVar);
-            _fileLoader = new FileLoader(environmentVar, configFilePath);
         }
 
         private string GetEnvironment(string environmentVar = "Environment") {
@@ -35,7 +34,9 @@ namespace EasySettings
         public IConfiguration Load() 
         {
             ConfigurationBuilder builder = new ConfigurationBuilder();
-            _fileLoader.AddJsonFiles(builder);
+            builder
+                .AddJsonConfig(_environment)
+                .AddConsulConfig(_environment);
 
             return builder.Build();
         }
