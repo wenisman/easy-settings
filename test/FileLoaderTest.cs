@@ -1,8 +1,6 @@
-using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
-using EasySettings;
 using EasySettings.CustomConfiguration;
 
 namespace test
@@ -12,7 +10,6 @@ namespace test
         private readonly IConfiguration _configuration;
 
         public FileLoaderTest() {
-//            var loader = new FileLoader("first");
             var builder = new ConfigurationBuilder();
             builder.AddJsonConfig("first");
 

@@ -1,8 +1,6 @@
-using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
-using EasySettings;
 using EasySettings.CustomConfiguration;
 
 namespace test
