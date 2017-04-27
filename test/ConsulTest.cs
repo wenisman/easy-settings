@@ -21,7 +21,12 @@ namespace test
         [Fact]
         public void should_read_sample_kv()
         {
-            Assert.Equal("test", _configuration["sample2"]);
+            Assert.Equal("test", _configuration["sample"]);
+        }
+
+        public void should_read_nested_kv()
+        {
+            Assert.Equal("Value One Nested", _configuration["nested:KeyOne"]);
         }
     }
 }

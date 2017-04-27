@@ -42,45 +42,38 @@ namespace EasySettings.CustomConfiguration
 
         public override void Load() 
         {
-            // read in the config from consul
-            Data = LoadData().Result;
+            try {
+                // read in the config from consul
+                using (var client = new ConsulClient((config) => config.Address = new Uri(_consulUri)))
+                {
+                    Data = LoadData(client).Result;
+                }
+            }
+            catch(Exception ex) {
+                // TODO: log exception
+            }
         }
 
-        private async Task<IDictionary<string, string>> LoadData()
+        private async Task<IDictionary<string, string>> LoadData(ConsulClient client, string path = "/")
         {
-            using (var client = new ConsulClient((config) => config.Address = new Uri(_consulUri)))
-            {
-                var keys = GetKeys(client);
-                var kvs = await GetValues(client, keys.Response);
-
-                if (kvs.Length > 0) {
-                    return ToDictionary(kvs);
-                }
+            var kvs = await client.KV.List(path);
+            if (kvs.Response.Length > 0) {
+                return ToDictionary(kvs.Response);
             }
 
             // TODO : log there where no config values to load
             return null;
         }
 
-        private QueryResult<string[]> GetKeys(ConsulClient client)
-        {
-            return client.KV.Keys("/").Result;
-        }
-
-        private Task<QueryResult<KVPair>[]> GetValues(ConsulClient client, string[] keys) 
-        {
-            return Task.WhenAll(keys.Select(key => client.KV.Get(key)));
-        }
-
-        private IDictionary<string, string> ToDictionary(QueryResult<KVPair>[] kvs)
+        private IDictionary<string, string> ToDictionary(KVPair[] kvs)
         {
             var output = new Dictionary<string, string>();
             foreach(var kv in kvs) {
-                output.Add(kv.Response.Key.Replace("/", ":"), Encoding.UTF8.GetString(kv.Response.Value));
+                if (!kv.Key.EndsWith("/")) {
+                     output.Add(kv.Key.Replace("/", ":"), Encoding.UTF8.GetString(kv.Value));
+                }
             }
             return output;
         }
-
     }
-
 }

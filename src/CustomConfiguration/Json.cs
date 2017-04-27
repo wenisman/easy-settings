@@ -24,7 +24,6 @@ namespace EasySettings.CustomConfiguration
         }
 
         private string GetSecretsFileName() {
-            Console.WriteLine($"{_path} {_environment}.secrets.json");
             return $"{_environment}.secrets.json";
         }
 
